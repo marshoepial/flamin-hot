@@ -1,12 +1,11 @@
 package com.dasheightmate.flaminhot.recipes;
 
-import com.dasheightmate.flaminhot.FlaminHot;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
@@ -15,7 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 
 /*
 Used for modifying the NBT of 8 different items surrounded by one modifying ingredient. Any 8 items, (requires shared nbt)
@@ -27,20 +25,28 @@ enum NBTAction{
     TOGGLE,
     SET
 }
+enum NBTType{
+    INTEGER,
+    BOOLEAN
+}
 
 public class ItemModRecipe implements CraftingRecipe {
     private final Identifier id;
     private final Ingredient ingredient;
     private final String nbtName;
     private final NBTAction nbtAction;
-    private final Integer nbtValue;
+    private final Object nbtValue;
+    private final NBTType nbtType;
+    private final int maxNBT;
 
-    public ItemModRecipe(Identifier id, Ingredient ingredient, String nbtName, NBTAction nbtAction, Integer nbtValue){
+    public ItemModRecipe(Identifier id, Ingredient ingredient, String nbtName, NBTAction nbtAction, Object nbtValue, NBTType nbtType, int maxNBT){
         this.id = id;
         this.ingredient = ingredient;
         this.nbtName = nbtName;
         this.nbtAction = nbtAction;
         this.nbtValue = nbtValue;
+        this.nbtType = nbtType;
+        this.maxNBT = maxNBT;
     }
 
     @Override
@@ -69,6 +75,16 @@ public class ItemModRecipe implements CraftingRecipe {
                 if (testNotEmpty) {
                     if (itemStack.equals(ItemStack.EMPTY) || itemStack.getCount() != 1 || !(itemStack.getItem() instanceof BlockItem)){
                         return false;
+                    }
+                    if (nbtType == NBTType.INTEGER){
+                        int resultingInt;
+                        if (itemStack.getTag() != null && itemStack.getTag().contains(nbtName))
+                            resultingInt = itemStack.getTag().getInt(nbtName);
+                        else resultingInt = (int) nbtValue;
+                        if (nbtAction == NBTAction.DECREMENT) resultingInt--;
+                        else if (nbtAction == NBTAction.INCREMENT) resultingInt++;
+                        else if (nbtAction == NBTAction.SET) resultingInt = (int) nbtValue;
+                        if (0 > resultingInt || resultingInt > maxNBT) return false;
                     }
                 } else {
                     if (!ingredient.test(itemStack)) {
@@ -109,10 +125,28 @@ public class ItemModRecipe implements CraftingRecipe {
     public DefaultedList<ItemStack> getRemainingStacks(CraftingInventory inventory) {
         DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
         for (int i = 0; i < defaultedList.size(); i++){
-            Item itemInSlot = inventory.getStack(i).getItem();
-            if (itemInSlot instanceof BlockItem){
-                //convert
-                defaultedList.set(i, new ItemStack(itemInSlot));
+            ItemStack itemInSlot = inventory.getStack(i);
+            if (itemInSlot.getItem() instanceof BlockItem){
+                CompoundTag returnTag = itemInSlot.getTag();
+                if (returnTag == null) returnTag = new CompoundTag();
+                if (nbtType == NBTType.BOOLEAN){
+                    if (nbtAction == NBTAction.SET) returnTag.putBoolean(nbtName, (Boolean) nbtValue);
+                    else if (nbtAction == NBTAction.TOGGLE){
+                        if (!returnTag.contains(nbtName)) returnTag.putBoolean(nbtName, !(Boolean)nbtValue);
+                        else returnTag.putBoolean(nbtName, !returnTag.getBoolean(nbtName));
+                    }
+                } else if (nbtType == NBTType.INTEGER){
+                    if (nbtAction == NBTAction.INCREMENT){
+                        if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue+1);
+                        else returnTag.putInt(nbtName, returnTag.getInt(nbtName)+1);
+                    } else if (nbtAction == NBTAction.DECREMENT){
+                        if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue-1);
+                        else returnTag.putInt(nbtName, returnTag.getInt(nbtName)-1);
+                    } else if (nbtAction == NBTAction.SET) returnTag.putInt(nbtName, (Integer)nbtValue);
+                }
+                ItemStack returnStack = itemInSlot.copy();
+                returnStack.setTag(returnTag);
+                defaultedList.set(i, returnStack);
             }
         }
         return defaultedList;
@@ -122,22 +156,34 @@ public class ItemModRecipe implements CraftingRecipe {
 
         @Override
         public ItemModRecipe read(Identifier id, JsonObject json) {
+            NBTType dataType = NBTType.values()[JsonHelper.getInt(json, "nbtType")];
+            Object nbtValue = null;
+            if (dataType == NBTType.BOOLEAN) nbtValue = JsonHelper.getBoolean(json, "nbtValue");
+            else if (dataType == NBTType.INTEGER) nbtValue = JsonHelper.getInt(json, "nbtValue");
             return new ItemModRecipe(id, Ingredient.fromJson(json.get("input")), JsonHelper.getString(json, "nbtName"),
-                    NBTAction.values()[JsonHelper.getInt(json, "nbtAction")], JsonHelper.getInt(json, "nbtValue"));
+                    NBTAction.values()[JsonHelper.getInt(json, "nbtAction")], nbtValue, dataType,
+                    JsonHelper.getInt(json, "nbtMax"));
         }
 
         @Override
         public ItemModRecipe read(Identifier id, PacketByteBuf buf) {
-            return new ItemModRecipe(id, Ingredient.fromPacket(buf), buf.readString(),
-                    NBTAction.values()[buf.readInt()], buf.readInt());
+            NBTType dataType = NBTType.values()[buf.readInt()];
+            Object nbtValue = null;
+            if (dataType == NBTType.BOOLEAN) nbtValue = buf.readBoolean();
+            else if (dataType == NBTType.INTEGER) nbtValue = buf.readInt();
+            return new ItemModRecipe(id, Ingredient.fromPacket(buf), buf.readString(), NBTAction.values()[buf.readInt()],
+                    nbtValue, dataType, buf.readInt());
         }
 
         @Override
         public void write(PacketByteBuf buf, ItemModRecipe recipe) {
+            buf.writeInt(recipe.nbtType.ordinal());
+            if (recipe.nbtType == NBTType.BOOLEAN) buf.writeBoolean((Boolean) recipe.nbtValue);
+            else if (recipe.nbtType == NBTType.INTEGER) buf.writeInt((Integer) recipe.nbtValue);
             recipe.ingredient.write(buf);
             buf.writeString(recipe.nbtName);
             buf.writeVarInt(recipe.nbtAction.ordinal());
-            buf.writeVarInt(recipe.nbtValue);
+            buf.writeVarInt(recipe.maxNBT);
         }
     }
 }

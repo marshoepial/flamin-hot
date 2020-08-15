@@ -3,6 +3,7 @@
   "package": "com.dasheightmate.flaminhot.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockItemPropertiesMixin",
     "BlockPropertiesMixin",
     "FireBehaviorMixin"
   ],

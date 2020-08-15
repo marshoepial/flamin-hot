@@ -3,7 +3,9 @@
   "input": {
     "item": "flaminhot:cementitious_blend"
   },
-  "nbtName": "foo",
+  "nbtName": "fireproofing",
   "nbtAction": 0,
-  "nbtValue": 0
+  "nbtValue": 3,
+  "nbtType": 0,
+  "nbtMax": 6
 }
