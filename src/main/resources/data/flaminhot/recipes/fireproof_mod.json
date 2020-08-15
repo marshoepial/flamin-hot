@@ -1,0 +1,9 @@
+{
+  "type": "crafting_item_mod",
+  "input": {
+    "item": "flaminhot:cementitious_blend"
+  },
+  "nbtName": "foo",
+  "nbtAction": 0,
+  "nbtValue": 0
+}

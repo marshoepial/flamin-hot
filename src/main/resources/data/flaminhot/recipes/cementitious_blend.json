@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CSC",
+    "GBG",
+    "CSC"
+  ],
+  "key": {
+    "C": {
+      "tag": "flaminhot:concrete_powder"
+    },
+    "S": {
+      "item": "minecraft:cobblestone"
+    },
+    "G": {
+      "item": "minecraft:gravel"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "result": {
+    "item": "flaminhot:cementitious_blend"
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.dasheightmate.flaminhot.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockPropertiesMixin",
+    "FireBehaviorMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
