@@ -3,6 +3,13 @@ plugins {
 	id 'maven-publish'
 }
 
+repositories {
+	maven {
+		name = "Ladysnake Libs"
+		url = "https://dl.bintray.com/ladysnake/libs"
+	}
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -20,6 +27,11 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
 }
 
 processResources {
@@ -73,7 +85,6 @@ publishing {
 
 	// select the repositories you want to publish to
 	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
+
 	}
 }

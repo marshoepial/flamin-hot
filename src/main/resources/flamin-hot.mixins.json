@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BlockItemPropertiesMixin",
-    "BlockPropertiesMixin",
-    "FireBehaviorMixin"
+    "FireBehaviorMixin",
+    "WorldMixin"
   ],
   "client": [],
   "server": [],
