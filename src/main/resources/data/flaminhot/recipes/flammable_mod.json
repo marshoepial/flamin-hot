@@ -1,0 +1,11 @@
+{
+  "type": "crafting_item_mod",
+  "input": {
+    "item": "flaminhot:flammable_blend"
+  },
+  "nbtName": "fireproofing",
+  "nbtAction": 1,
+  "nbtValue": 3,
+  "nbtType": 0,
+  "nbtMax": 6
+}

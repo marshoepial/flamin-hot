@@ -3,6 +3,8 @@ package com.dasheightmate.flaminhot.mixin;
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityInfo;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,15 +28,17 @@ import java.util.List;
 
 @Mixin(BlockItem.class)
 public class BlockItemPropertiesMixin{
+    @Environment(EnvType.CLIENT)
     @Inject(method = "appendTooltip", at=@At("TAIL"))
     private void flammabilityTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci){
         if (stack.getTag() != null){
             CompoundTag tag = stack.getTag();
             if (tag.contains("fireproofing") && tag.getInt("fireproofing") != 3){
                 int flammability = tag.getInt("fireproofing");
-                tooltip.add(new LiteralText("Fireproofing: "+(flammability-3)+(flammability == 6 ? " [max]" : ""))
+                tooltip.add(new LiteralText((flammability < 3 ? "Flammability: " : "Fireproofing: ")+Math.abs(flammability-3)+
+                        ((flammability == 6 || flammability == 0) ? " [max]" : ""))
                         .setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-                tooltip.add(new LiteralText("This block is "+Math.round((1-(1.0/(((double)flammability-3.0)*2.0)))*100.0)+ "%" +
+                tooltip.add(new LiteralText("This block is "+Math.round((1-(1.0/(Math.abs((double)flammability-3.0)*2.0)))*100.0)+ "%" +
                         (flammability > 3 ? " less " : " more ") + "flammable.").setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
             } if (tag.contains("infiniburn") && tag.getBoolean("infiniburn")){
                 tooltip.add(new LiteralText("Infiniburn").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));

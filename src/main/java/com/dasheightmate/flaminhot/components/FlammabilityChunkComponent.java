@@ -39,7 +39,6 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     public void createBlock(BlockPos pos, FlammabilityInfo info) {
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
         flammabilityMap.put(pos, info);
-        FlaminHot.log(Level.DEBUG, flammabilityMap.toString());
     }
 
     private boolean isPosWithinChunk(BlockPos pos){
@@ -53,7 +52,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
         int i = 0;
         while (compoundTag.contains(i+"posxflamin")){
             BlockPos pos = new BlockPos(compoundTag.getInt(i+"posxflamin"), compoundTag.getInt(i+"posyflamin"),
-                    compoundTag.getInt(i+"pozflamin"));
+                    compoundTag.getInt(i+"poszflamin"));
             FlammabilityInfo flaminfo = new FlammabilityInfo((CompoundTag) compoundTag.get(i+"flaminfo"));
             flammabilityMap.put(pos, flaminfo);
             i++;

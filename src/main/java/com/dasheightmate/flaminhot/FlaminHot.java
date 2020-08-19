@@ -4,6 +4,7 @@ import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityChunkComponent;
 import com.dasheightmate.flaminhot.items.ItemRegistrar;
 import com.dasheightmate.flaminhot.recipes.ItemModRecipe;
+import com.dasheightmate.flaminhot.recipes.SerializerRegistrar;
 import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
@@ -27,8 +28,11 @@ public class FlaminHot implements ModInitializer {
     public void onInitialize() {
         log(Level.INFO, "Initializing");
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "cementitious_blend"), ItemRegistrar.CEMENTITIOUS_BLEND);
-        RecipeSerializer.register("crafting_item_mod", new ItemModRecipe.Serializer());
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "sawdust"), ItemRegistrar.SAWDUST);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "flammable_blend"), ItemRegistrar.FLAMMABLE_BLEND);
         ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.attach(ChunkComponentCallback.EVENT, FlammabilityChunkComponent::new);
+        RecipeSerializer.register("crafting_item_mod", SerializerRegistrar.ITEM_MOD_RECIPE);
+        log(Level.INFO, "Flamin' Hot initialized.");
     }
 
     public static void log(Level level, String message){

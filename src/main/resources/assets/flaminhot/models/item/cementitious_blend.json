@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "flaminhot:item/cementitious_blend.png"
+    "layer0": "flaminhot:item/cementitious_blend"
   }
 }

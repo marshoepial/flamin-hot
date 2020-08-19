@@ -118,7 +118,7 @@ public class ItemModRecipe implements CraftingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return null;
+        return SerializerRegistrar.ITEM_MOD_RECIPE;
     }
 
     @Override
@@ -171,8 +171,8 @@ public class ItemModRecipe implements CraftingRecipe {
             Object nbtValue = null;
             if (dataType == NBTType.BOOLEAN) nbtValue = buf.readBoolean();
             else if (dataType == NBTType.INTEGER) nbtValue = buf.readInt();
-            return new ItemModRecipe(id, Ingredient.fromPacket(buf), buf.readString(), NBTAction.values()[buf.readInt()],
-                    nbtValue, dataType, buf.readInt());
+            return new ItemModRecipe(id, Ingredient.fromPacket(buf), buf.readString(), NBTAction.values()[buf.readVarInt()],
+                    nbtValue, dataType, buf.readVarInt());
         }
 
         @Override
