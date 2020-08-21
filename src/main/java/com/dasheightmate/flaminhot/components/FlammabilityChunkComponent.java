@@ -1,22 +1,19 @@
 package com.dasheightmate.flaminhot.components;
 
-import com.dasheightmate.flaminhot.FlaminHot;
 import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
-import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
-import org.apache.logging.log4j.Level;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     private final Map<BlockPos, FlammabilityInfo> flammabilityMap = new HashMap<>();
+    private Map<BlockPos, FlammabilityInfo> removedThisTick = new HashMap<>();
+    private long tickOfRemoval = 0;
     private final Chunk controllingChunk;
 
     public FlammabilityChunkComponent(Chunk controllingChunk) {
@@ -25,13 +22,30 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
 
     @Override
     public FlammabilityInfo getFlammabilityInfo(BlockPos pos) {
-        if (isPosWithinChunk(pos)) return flammabilityMap.get(pos);
+        if (isPosWithinChunk(pos)){
+            //FlaminHot.log(Level.DEBUG, "Returning data for pos "+pos);
+            return flammabilityMap.get(pos);
+        }
         return null;
     }
 
     @Override
-    public void deleteBlock(BlockPos pos) {
+    public FlammabilityInfo getFlamInfoRemoved(BlockPos pos, long tick) {
+        if (isPosWithinChunk(pos)){
+            if (tick == tickOfRemoval) {
+                //FlaminHot.log(Level.DEBUG, "Returning removed data for pos " + pos);
+                return removedThisTick.get(pos);
+            } else newTick(tick);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteBlock(BlockPos pos, long tick) {
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
+        //FlaminHot.log(Level.INFO, "Removing block "+flammabilityMap.get(pos) + " at pos "+pos);
+        if (tick != tickOfRemoval) newTick(tick);
+        removedThisTick.put(pos, flammabilityMap.get(pos));
         flammabilityMap.remove(pos);
     }
 
@@ -50,11 +64,12 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     @Override
     public void fromTag(CompoundTag compoundTag) {
         int i = 0;
-        while (compoundTag.contains(i+"posxflamin")){
-            BlockPos pos = new BlockPos(compoundTag.getInt(i+"posxflamin"), compoundTag.getInt(i+"posyflamin"),
-                    compoundTag.getInt(i+"poszflamin"));
-            FlammabilityInfo flaminfo = new FlammabilityInfo((CompoundTag) compoundTag.get(i+"flaminfo"));
+        while (compoundTag.contains(i+"posxflamin")) {
+            BlockPos pos = new BlockPos(compoundTag.getInt(i + "posxflamin"), compoundTag.getInt(i + "posyflamin"),
+                    compoundTag.getInt(i + "poszflamin"));
+            FlammabilityInfo flaminfo = new FlammabilityInfo(compoundTag, i);
             flammabilityMap.put(pos, flaminfo);
+            //FlaminHot.log(Level.INFO, flammabilityMap.get(pos).fireproofing + " at chunk pos "+controllingChunk.getPos());
             i++;
         }
     }
@@ -67,7 +82,8 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
             compoundTag.putInt(i+"posxflamin", mapEntrySet[i].getKey().getX());
             compoundTag.putInt(i+"posyflamin", mapEntrySet[i].getKey().getY());
             compoundTag.putInt(i+"poszflamin", mapEntrySet[i].getKey().getZ());
-            compoundTag.put(i+"flaminfo", mapEntrySet[i].getValue().serialize());
+            mapEntrySet[i].getValue().serialize(compoundTag, i);
+            //FlaminHot.log(Level.INFO, "Saving block at pos "+mapEntrySet[i].getKey());
         }
         return compoundTag;
     }
@@ -75,5 +91,10 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     @Override
     public ComponentType<?> getComponentType() {
         return ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT;
+    }
+
+    private void newTick(long tick){
+        removedThisTick = new HashMap<>();
+        tickOfRemoval = tick;
     }
 }

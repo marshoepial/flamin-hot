@@ -5,6 +5,7 @@
   "mixins": [
     "AxeItemMixin",
     "BlockItemPropertiesMixin",
+    "BlockMixin",
     "FireBehaviorMixin",
     "WorldMixin"
   ],
