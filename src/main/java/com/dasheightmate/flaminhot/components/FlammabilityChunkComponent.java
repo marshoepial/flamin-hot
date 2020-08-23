@@ -1,10 +1,17 @@
 package com.dasheightmate.flaminhot.components;
 
+import com.dasheightmate.flaminhot.FlaminHot;
 import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,7 +59,22 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     @Override
     public void createBlock(BlockPos pos, FlammabilityInfo info) {
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
+        //FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
         flammabilityMap.put(pos, info);
+    }
+
+    @Override
+    public void moveBlock(World world, BlockPos pos, Direction dir) {
+        if (!world.isClient) {
+            if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
+            BlockPos newPos = pos.offset(dir);
+            //FlaminHot.log(Level.DEBUG, "Moving block to "+newPos);
+            FlammabilityInfo movedInfo = flammabilityMap.get(pos);
+            flammabilityMap.remove(pos);
+            if (!isPosWithinChunk(newPos)) ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(
+                    ComponentProvider.fromChunk(world.getWorldChunk(newPos))).createBlock(newPos, movedInfo);
+            else createBlock(newPos, movedInfo);
+        }
     }
 
     private boolean isPosWithinChunk(BlockPos pos){
@@ -75,7 +97,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
+    public @NotNull CompoundTag toTag(CompoundTag compoundTag) {
         Map.Entry<BlockPos, FlammabilityInfo>[] mapEntrySet = Arrays.copyOf(flammabilityMap.entrySet().toArray(),
                 flammabilityMap.size(), Map.Entry[].class);
         for (int i = 0; i < flammabilityMap.size(); i++){
@@ -89,7 +111,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     }
 
     @Override
-    public ComponentType<?> getComponentType() {
+    public @NotNull ComponentType<?> getComponentType() {
         return ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT;
     }
 

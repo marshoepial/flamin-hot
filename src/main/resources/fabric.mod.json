@@ -8,7 +8,10 @@
     "DashEightMate"
   ],
   "contributors": [],
-  "contact": {},
+  "contact": {
+    "sources": "https://github.com/DashEightMate/flamin-hot",
+    "issues": "https://github.com/DashEightMate/flamin-hot/issues"
+  },
   "license": "LGPL-3.0",
   "icon": "assets/flaminhot/icon.png",
   "environment": "*",
@@ -16,7 +19,9 @@
     "main": [
       "com.dasheightmate.flaminhot.FlaminHot"
     ],
-    "client": [],
+    "client": [
+      "com.dasheightmate.flaminhot.ClientInitializer"
+    ],
     "server": []
   },
   "mixins": [
@@ -25,5 +30,11 @@
   "depends": {
     "fabricloader": ">=0.9.1",
     "fabric": "*"
+  },
+  "custom": {
+    "waila:plugins": {
+      "id": "flaminhot:flammodifier",
+      "initializer": "com.dasheightmate.flaminhot.integration.hwyla.FlaminHotPlugin"
+    }
   }
 }

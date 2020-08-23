@@ -29,7 +29,10 @@ public abstract class BlockMixin {
         List<ItemStack> returnList = cir.getReturnValue();
         returnList.replaceAll((stack) -> {
             if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock().equals(state.getBlock())){
+                //handle cases for when stacks are dropped before and after the block is removed.
                 FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(
+                        world.getWorldChunk(pos))).getFlammabilityInfo(pos);
+                if (info == null) info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(
                         world.getWorldChunk(pos))).getFlamInfoRemoved(pos, world.getTime());
                 if (info != null) {
                     ItemStack replaceStack = stack.copy();
@@ -53,6 +56,8 @@ public abstract class BlockMixin {
         returnList.replaceAll((stack) -> {
             if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock().equals(state.getBlock())){
                 FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(
+                        world.getWorldChunk(pos))).getFlammabilityInfo(pos);
+                if (info == null) info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(
                         world.getWorldChunk(pos))).getFlamInfoRemoved(pos, world.getTime());
                 if (info != null) {
                     ItemStack replaceStack = stack.copy();

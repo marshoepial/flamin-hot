@@ -8,6 +8,7 @@ repositories {
 		name = "Ladysnake Libs"
 		url = "https://dl.bintray.com/ladysnake/libs"
 	}
+	maven {url = "https://maven.tehnut.info"}
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -32,6 +33,8 @@ dependencies {
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
+
+	modImplementation "mcp.mobius.waila:Hwyla:1.16.2-1.9.23-79"
 }
 
 processResources {

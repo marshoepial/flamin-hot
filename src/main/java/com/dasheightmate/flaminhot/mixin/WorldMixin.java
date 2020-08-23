@@ -17,7 +17,7 @@ public abstract class WorldMixin {
     @Inject(method = "onBlockChanged", at=@At("HEAD"))
     private void handleStateUpdate(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo ci){
         if (Objects.requireNonNull(((ServerWorld)(Object)this).getServer()).getThread() == Thread.currentThread()) {
-            if (((ServerWorld) (Object) this).getBlockState(pos).isAir()) {
+            if (newBlock.isAir()) {
                 ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(((ServerWorld) (Object) this)
                         .getChunk(pos))).deleteBlock(pos, ((ServerWorld)(Object)this).getTime());
             }

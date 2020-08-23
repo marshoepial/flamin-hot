@@ -11,13 +11,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.CallbackI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,20 +31,9 @@ public class BlockItemPropertiesMixin{
     private void flammabilityTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci){
         if (stack.getTag() != null){
             CompoundTag tag = stack.getTag();
-            if (tag.contains("fireproofing") && tag.getInt("fireproofing") != 3){
-                int flammability = tag.getInt("fireproofing");
-                tooltip.add(new LiteralText((flammability < 3 ? "Flammability: " : "Fireproofing: ")+Math.abs(flammability-3)+
-                        ((flammability == 6 || flammability == 0) ? " [max]" : ""))
-                        .setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-                tooltip.add(new LiteralText("This block is "+Math.round((1-(1.0/(Math.abs((double)flammability-3.0)*2.0)))*100.0)+ "%" +
-                        (flammability > 3 ? " less " : " more ") + "flammable.").setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
-            } if (tag.contains("infiniburn") && tag.getBoolean("infiniburn")){
-                tooltip.add(new LiteralText("Infiniburn").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-                tooltip.add(new LiteralText("This block will burn forever.")
-                        .setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
-            } if (tag.contains("explosive") && tag.getBoolean("explosive")){
-                tooltip.add(new LiteralText("Explosive").setStyle(Style.EMPTY.withColor(Formatting.RED)));
-            }
+            FlammabilityInfo info = new FlammabilityInfo(tag.getBoolean("infiniburn"), tag.getBoolean("explosive"),
+                    tag.getInt("fireproofing"));
+            info.addTooltip(tooltip, true);
         }
     }
 
