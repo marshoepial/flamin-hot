@@ -59,7 +59,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     @Override
     public void createBlock(BlockPos pos, FlammabilityInfo info) {
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
-        //FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
+        FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
         flammabilityMap.put(pos, info);
     }
 

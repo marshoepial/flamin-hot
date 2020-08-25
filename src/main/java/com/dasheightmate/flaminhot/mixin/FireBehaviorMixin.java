@@ -1,5 +1,6 @@
 package com.dasheightmate.flaminhot.mixin;
 
+import com.dasheightmate.flaminhot.FlaminHot;
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityInfo;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,17 +46,28 @@ public abstract class FireBehaviorMixin{
         FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
                 .get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).getFlammabilityInfo(pos);
         if (info != null) {
+            if (info.infiniburn) return 0;
             int fireproofing = info.fireproofing;
-            i  = (i / (fireproofing > 3 ? (fireproofing - 3) * 4 : 1)) * (fireproofing < 3 ? Math.abs(fireproofing - 3) * 2 : 1);
-            return i;
+            i = (i / (fireproofing > 3 ? (fireproofing - 3) * 4 : 1)) * (fireproofing < 3 ? Math.abs(fireproofing - 3) * 2 : 1);
         }
         return i;
     }
 
+    @ModifyVariable(method = "scheduledTick",
+            at=@At(value="INVOKE", target = "Lnet/minecraft/block/BlockState;get(Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;"),
+            ordinal = 0)
+    private boolean modifyInfiniburn(boolean bl, BlockState state, ServerWorld world, BlockPos pos, Random random){
+        FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
+                .get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).getFlammabilityInfo(pos.down());
+        if (info != null && info.infiniburn) return true;
+        else return bl;
+    }
+
     @Inject(method = "scheduledTick", at=@At(value = "INVOKE",
             target = "Lnet/minecraft/server/world/ServerWorld;isRaining()Z", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true)
-    private void testIfFlammable(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+    private void testIfFlammable(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci, BlockState blockState, boolean bl, int i) {
         FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
                 .get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).getFlammabilityInfo(pos.down());
         //chance to remove fire altogether.

@@ -1,0 +1,11 @@
+{
+  "type": "crafting_item_mod",
+  "input": {
+    "item": "flaminhot:infiniburn_blend"
+  },
+  "nbtName": "infiniburn",
+  "nbtAction": 3,
+  "nbtValue": true,
+  "nbtType": 1,
+  "nbtMax": 6
+}

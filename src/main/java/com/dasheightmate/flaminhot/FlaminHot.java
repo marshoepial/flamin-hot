@@ -39,6 +39,7 @@ public class FlaminHot implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "cementitious_blend"), ItemRegistrar.CEMENTITIOUS_BLEND);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "sawdust"), ItemRegistrar.SAWDUST);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "flammable_blend"), ItemRegistrar.FLAMMABLE_BLEND);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "infiniburn_blend"), ItemRegistrar.INFINIBURN_BLEND);
         ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.attach(ChunkComponentCallback.EVENT, FlammabilityChunkComponent::new);
         RecipeSerializer.register("crafting_item_mod", SerializerRegistrar.ITEM_MOD_RECIPE);
         NetworkingHandler.init();

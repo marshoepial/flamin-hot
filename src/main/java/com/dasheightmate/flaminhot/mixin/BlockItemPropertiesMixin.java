@@ -32,7 +32,7 @@ public class BlockItemPropertiesMixin{
         if (stack.getTag() != null){
             CompoundTag tag = stack.getTag();
             FlammabilityInfo info = new FlammabilityInfo(tag.getBoolean("infiniburn"), tag.getBoolean("explosive"),
-                    tag.getInt("fireproofing"));
+                    tag.contains("fireproofing") ? tag.getInt("fireproofing") : 3);
             info.addTooltip(tooltip, true);
         }
     }
