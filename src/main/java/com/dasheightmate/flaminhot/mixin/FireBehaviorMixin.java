@@ -32,7 +32,8 @@ public abstract class FireBehaviorMixin{
                                     Direction[] var4, int var5, int var6, Direction direction, BlockState blockState){
         FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
                 .get(ComponentProvider.fromChunk(worldView.getChunk(pos))).getFlammabilityInfo(pos);
-        if (info != null) {
+        if (info != null && direction == var4[var4.length-1]) {
+            if (info.infiniburn) cir.setReturnValue(0);
             int fireproofing = info.fireproofing;
             cir.setReturnValue((int) Math.round(i / (fireproofing > 3 ? (fireproofing - 3) * 2.0 : 1)
                     * (fireproofing < 3 ? Math.abs(fireproofing - 3) * 2 : 1)));
