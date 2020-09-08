@@ -1,23 +1,21 @@
 package com.dasheightmate.flaminhot.components;
 
-import com.dasheightmate.flaminhot.FlaminHot;
+import dev.onyxstudios.cca.api.v3.component.AutoSyncedComponent;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
+public class FlammabilityChunkComponent implements FlammabilityChunkInterface, AutoSyncedComponent {
     private final Map<BlockPos, FlammabilityInfo> flammabilityMap = new HashMap<>();
     private Map<BlockPos, FlammabilityInfo> removedThisTick = new HashMap<>();
     private long tickOfRemoval = 0;
@@ -59,7 +57,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     @Override
     public void createBlock(BlockPos pos, FlammabilityInfo info) {
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
-        FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
+        //FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
         flammabilityMap.put(pos, info);
     }
 
@@ -84,7 +82,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     }
 
     @Override
-    public void fromTag(CompoundTag compoundTag) {
+    public void readFromNbt(CompoundTag compoundTag) {
         int i = 0;
         while (compoundTag.contains(i+"posxflamin")) {
             BlockPos pos = new BlockPos(compoundTag.getInt(i + "posxflamin"), compoundTag.getInt(i + "posyflamin"),
@@ -97,7 +95,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
     }
 
     @Override
-    public @NotNull CompoundTag toTag(CompoundTag compoundTag) {
+    public void writeToNbt(CompoundTag compoundTag) {
         Map.Entry<BlockPos, FlammabilityInfo>[] mapEntrySet = Arrays.copyOf(flammabilityMap.entrySet().toArray(),
                 flammabilityMap.size(), Map.Entry[].class);
         for (int i = 0; i < flammabilityMap.size(); i++){
@@ -107,7 +105,6 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface {
             mapEntrySet[i].getValue().serialize(compoundTag, i);
             //FlaminHot.log(Level.INFO, "Saving block at pos "+mapEntrySet[i].getKey());
         }
-        return compoundTag;
     }
 
     @Override

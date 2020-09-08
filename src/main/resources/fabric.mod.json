@@ -19,9 +19,7 @@
     "main": [
       "com.dasheightmate.flaminhot.FlaminHot"
     ],
-    "client": [
-      "com.dasheightmate.flaminhot.ClientInitializer"
-    ],
+    "client": [],
     "server": []
   },
   "mixins": [

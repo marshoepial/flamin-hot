@@ -1,6 +1,5 @@
 package com.dasheightmate.flaminhot.mixin;
 
-import com.dasheightmate.flaminhot.FlaminHot;
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityInfo;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -11,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

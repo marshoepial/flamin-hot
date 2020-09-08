@@ -36,10 +36,10 @@ public abstract class BlockMixin {
                         world.getWorldChunk(pos))).getFlamInfoRemoved(pos, world.getTime());
                 if (info != null) {
                     ItemStack replaceStack = stack.copy();
-                    CompoundTag tag = new CompoundTag();
-                    if (info.fireproofing != 3) tag.putInt("fireproofing", info.fireproofing);
-                    if (info.infiniburn) tag.putBoolean("infiniburn", true);
-                    if (info.explosive) tag.putBoolean("explosive", true);
+                    CompoundTag tag = replaceStack.getOrCreateTag();
+                    if (info.fireproofing != 3) tag.putInt("flamin_fireproofing", info.fireproofing);
+                    if (info.infiniburn) tag.putBoolean("flamin_infiniburn", true);
+                    if (info.explosive) tag.putBoolean("flamin_explosive", true);
                     replaceStack.setTag(tag);
                     return replaceStack;
                 }
@@ -61,10 +61,10 @@ public abstract class BlockMixin {
                         world.getWorldChunk(pos))).getFlamInfoRemoved(pos, world.getTime());
                 if (info != null) {
                     ItemStack replaceStack = stack.copy();
-                    CompoundTag tag = new CompoundTag();
-                    if (info.fireproofing != 3) tag.putInt("fireproofing", info.fireproofing);
-                    if (info.infiniburn) tag.putBoolean("infiniburn", true);
-                    if (info.explosive) tag.putBoolean("explosive", true);
+                    CompoundTag tag = replaceStack.getOrCreateTag();
+                    if (info.fireproofing != 3) tag.putInt("flamin_fireproofing", info.fireproofing);
+                    if (info.infiniburn) tag.putBoolean("flamin_infiniburn", true);
+                    if (info.explosive) tag.putBoolean("flamin_explosive", true);
                     replaceStack.setTag(tag);
                     return replaceStack;
                 }

@@ -31,8 +31,8 @@ public class BlockItemPropertiesMixin{
     private void flammabilityTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci){
         if (stack.getTag() != null){
             CompoundTag tag = stack.getTag();
-            FlammabilityInfo info = new FlammabilityInfo(tag.getBoolean("infiniburn"), tag.getBoolean("explosive"),
-                    tag.contains("fireproofing") ? tag.getInt("fireproofing") : 3);
+            FlammabilityInfo info = new FlammabilityInfo(tag.getBoolean("flamin_infiniburn"), tag.getBoolean("flamin_explosive"),
+                    tag.contains("flamin_fireproofing") ? tag.getInt("flamin_fireproofing") : 3);
             info.addTooltip(tooltip, true);
         }
     }
@@ -42,9 +42,9 @@ public class BlockItemPropertiesMixin{
                                       BlockState state, CallbackInfoReturnable<Boolean> cir){
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            FlammabilityInfo info = new FlammabilityInfo(tag.contains("infiniburn") && tag.getBoolean("infiniburn"),
-                    tag.contains("explosive") && tag.getBoolean("explosive"),
-                    tag.contains("fireproofing") ? tag.getInt("fireproofing") : 3);
+            FlammabilityInfo info = new FlammabilityInfo(tag.contains("flamin_infiniburn") && tag.getBoolean("flamin_infiniburn"),
+                    tag.contains("flamin_explosive") && tag.getBoolean("flamin_explosive"),
+                    tag.contains("flamin_fireproofing") ? tag.getInt("flamin_fireproofing") : 3);
             ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).createBlock(pos, info);
         }
     }

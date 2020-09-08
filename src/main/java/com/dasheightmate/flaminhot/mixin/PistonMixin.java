@@ -2,7 +2,6 @@ package com.dasheightmate.flaminhot.mixin;
 
 //used to handle movement of fireproofed blocks by piston.
 
-import com.dasheightmate.flaminhot.FlaminHot;
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityChunkComponent;
 import net.minecraft.block.BlockState;
@@ -11,7 +10,6 @@ import net.minecraft.block.piston.PistonHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

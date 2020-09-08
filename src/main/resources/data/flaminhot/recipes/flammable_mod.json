@@ -3,7 +3,7 @@
   "input": {
     "item": "flaminhot:flammable_blend"
   },
-  "nbtName": "fireproofing",
+  "nbtName": "flamin_fireproofing",
   "nbtAction": 1,
   "nbtValue": 3,
   "nbtType": 0,

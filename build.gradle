@@ -29,10 +29,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
-	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
-	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:2.5.0"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_comp_version}"
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_comp_version}"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
 
 	modImplementation "mcp.mobius.waila:Hwyla:1.16.2-1.9.23-79"
 }
