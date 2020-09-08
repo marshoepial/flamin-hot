@@ -52,6 +52,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface, A
         if (tick != tickOfRemoval) newTick(tick);
         removedThisTick.put(pos, flammabilityMap.get(pos));
         flammabilityMap.remove(pos);
+        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.sync(controllingChunk);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface, A
         if (!isPosWithinChunk(pos)) throw new IllegalArgumentException("Pos not within chunk bounds");
         //FlaminHot.log(Level.INFO, "Adding block "+info + " at pos "+pos);
         flammabilityMap.put(pos, info);
+        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.sync(controllingChunk);
     }
 
     @Override
@@ -83,6 +85,7 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface, A
 
     @Override
     public void readFromNbt(CompoundTag compoundTag) {
+        flammabilityMap.clear();
         int i = 0;
         while (compoundTag.contains(i+"posxflamin")) {
             BlockPos pos = new BlockPos(compoundTag.getInt(i + "posxflamin"), compoundTag.getInt(i + "posyflamin"),

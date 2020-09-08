@@ -4,6 +4,7 @@ package com.dasheightmate.flaminhot.mixin;
 
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityChunkComponent;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.piston.PistonHandler;
@@ -31,14 +32,14 @@ public class PistonMixin {
         //FlaminHot.log(Level.DEBUG, "Checking if serverside...");
         if (!world.isClient) {
             for (BlockPos movePos : list) {
-                    FlammabilityChunkComponent component = (FlammabilityChunkComponent)
-                        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(world.getWorldChunk(pos));
+                FlammabilityChunkComponent component = (FlammabilityChunkComponent)
+                        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(world.getWorldChunk(pos)));
                 if (component.getFlammabilityInfo(movePos) != null){
                     component.moveBlock(world, movePos, retract ? dir : dir.getOpposite());
                 }
             } for (BlockPos removePos : list3) {
                 FlammabilityChunkComponent component = (FlammabilityChunkComponent)
-                        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(world.getWorldChunk(pos));
+                        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.get(ComponentProvider.fromChunk(world.getWorldChunk(pos)));
                 if (component.getFlammabilityInfo(removePos) != null){
                     component.deleteBlock(removePos, world.getTime());
                 }

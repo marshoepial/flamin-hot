@@ -41,7 +41,7 @@ public class BlockItemPropertiesMixin{
     private void registerFlammability(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack,
                                       BlockState state, CallbackInfoReturnable<Boolean> cir){
         CompoundTag tag = stack.getTag();
-        if (tag != null) {
+        if (tag != null && !world.isClient()) {
             FlammabilityInfo info = new FlammabilityInfo(tag.contains("flamin_infiniburn") && tag.getBoolean("flamin_infiniburn"),
                     tag.contains("flamin_explosive") && tag.getBoolean("flamin_explosive"),
                     tag.contains("flamin_fireproofing") ? tag.getInt("flamin_fireproofing") : 3);
