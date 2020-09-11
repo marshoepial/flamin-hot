@@ -8,7 +8,13 @@ repositories {
 		name = "Ladysnake Libs"
 		url = "https://dl.bintray.com/ladysnake/libs"
 	}
-	maven {url = "https://maven.tehnut.info"}
+	maven {
+		name = "HWYLA"
+		url = "https://maven.tehnut.info"
+		content {
+			includeGroup "mcp.mobius.waila"
+		}
+	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -34,7 +40,15 @@ dependencies {
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
 
-	modImplementation "mcp.mobius.waila:Hwyla:1.16.2-1.9.23-79"
+	modImplementation ("mcp.mobius.waila:Hwyla:${project.minecraft_version}-${project.hwyla_version}"){
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	modCompileOnly ("me.shedaniel:RoughlyEnoughItems:${project.rei_version}"){
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	modRuntime ("me.shedaniel:RoughlyEnoughItems:${project.rei_version}"){
+		exclude group: "net.fabricmc.fabric-api"
+	}
 }
 
 processResources {

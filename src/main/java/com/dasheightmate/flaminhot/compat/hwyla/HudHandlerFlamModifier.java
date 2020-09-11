@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.integration.hwyla;
+package com.dasheightmate.flaminhot.compat.hwyla;
 
 import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityInfo;

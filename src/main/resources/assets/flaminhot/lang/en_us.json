@@ -2,5 +2,7 @@
   "item.flaminhot.sawdust": "Sawdust",
   "item.flaminhot.cementitious_blend": "Cementitious Blend",
   "item.flaminhot.flammable_blend": "Flammable Blend",
-  "item.flaminhot.infiniburn_blend": "Blend of Infinite Turmoil"
+  "item.flaminhot.infiniburn_blend": "Blend of Infinite Turmoil",
+  "compat.rei.flaminhot.item_mod_name": "Item Modification",
+  "compat.rei.flaminhot.info.sawdust": "Sawdust has a chance to drop when you strip a log with an axe."
 }

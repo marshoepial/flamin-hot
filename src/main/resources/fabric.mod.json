@@ -20,7 +20,10 @@
       "com.dasheightmate.flaminhot.FlaminHot"
     ],
     "client": [],
-    "server": []
+    "server": [],
+    "rei_plugins": [
+      "com.dasheightmate.flaminhot.compat.rei.FlaminHotReiPlugin"
+    ]
   },
   "mixins": [
     "flamin-hot.mixins.json"
@@ -32,7 +35,7 @@
   "custom": {
     "waila:plugins": {
       "id": "flaminhot:flammodifier",
-      "initializer": "com.dasheightmate.flaminhot.integration.hwyla.FlaminHotPlugin"
+      "initializer": "com.dasheightmate.flaminhot.compat.hwyla.FlaminHotHwylaPlugin"
     }
   }
 }

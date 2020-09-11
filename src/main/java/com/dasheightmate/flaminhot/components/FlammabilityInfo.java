@@ -6,7 +6,12 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FlammabilityInfo {
     public final boolean infiniburn;
@@ -38,7 +43,7 @@ public class FlammabilityInfo {
         return tag;
     }
 
-    public void addTooltip(List<Text> tooltip, boolean withDesc){
+    public Collection<Text> addTooltip(Collection<Text> tooltip, boolean withDesc){
         if (fireproofing != 3){
             tooltip.add(new LiteralText((fireproofing < 3 ? "Flammability: " : "Fireproofing: ")+Math.abs(fireproofing-3)+
                     ((fireproofing == 6 || fireproofing == 0) ? " [max]" : ""))
@@ -52,5 +57,7 @@ public class FlammabilityInfo {
                     .setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
         }
         if (explosive) tooltip.add(new LiteralText("Explosive").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+
+        return tooltip;
     }
 }

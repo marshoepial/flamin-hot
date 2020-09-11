@@ -111,6 +111,8 @@ public class ItemModRecipe implements CraftingRecipe {
         return new ItemStack(Items.BUCKET);
     }
 
+    public Ingredient getInput() { return ingredient; }
+
     @Override
     public Identifier getId() {
         return this.id;
@@ -127,29 +129,33 @@ public class ItemModRecipe implements CraftingRecipe {
         for (int i = 0; i < defaultedList.size(); i++){
             ItemStack itemInSlot = inventory.getStack(i);
             if (itemInSlot.getItem() instanceof BlockItem){
-                CompoundTag returnTag = itemInSlot.getTag();
-                if (returnTag == null) returnTag = new CompoundTag();
-                if (nbtType == NBTType.BOOLEAN){
-                    if (nbtAction == NBTAction.SET) returnTag.putBoolean(nbtName, (Boolean) nbtValue);
-                    else if (nbtAction == NBTAction.TOGGLE){
-                        if (!returnTag.contains(nbtName)) returnTag.putBoolean(nbtName, !(Boolean)nbtValue);
-                        else returnTag.putBoolean(nbtName, !returnTag.getBoolean(nbtName));
-                    }
-                } else if (nbtType == NBTType.INTEGER){
-                    if (nbtAction == NBTAction.INCREMENT){
-                        if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue+1);
-                        else returnTag.putInt(nbtName, returnTag.getInt(nbtName)+1);
-                    } else if (nbtAction == NBTAction.DECREMENT){
-                        if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue-1);
-                        else returnTag.putInt(nbtName, returnTag.getInt(nbtName)-1);
-                    } else if (nbtAction == NBTAction.SET) returnTag.putInt(nbtName, (Integer)nbtValue);
-                }
+                CompoundTag returnTag = getResultingNBT(itemInSlot);
                 ItemStack returnStack = itemInSlot.copy();
                 returnStack.setTag(returnTag);
                 defaultedList.set(i, returnStack);
             }
         }
         return defaultedList;
+    }
+
+    public CompoundTag getResultingNBT(ItemStack item){
+        CompoundTag returnTag = item.getOrCreateTag();
+        if (nbtType == NBTType.BOOLEAN){
+            if (nbtAction == NBTAction.SET) returnTag.putBoolean(nbtName, (Boolean) nbtValue);
+            else if (nbtAction == NBTAction.TOGGLE){
+                if (!returnTag.contains(nbtName)) returnTag.putBoolean(nbtName, !(Boolean)nbtValue);
+                else returnTag.putBoolean(nbtName, !returnTag.getBoolean(nbtName));
+            }
+        } else if (nbtType == NBTType.INTEGER){
+            if (nbtAction == NBTAction.INCREMENT){
+                if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue+1);
+                else returnTag.putInt(nbtName, returnTag.getInt(nbtName)+1);
+            } else if (nbtAction == NBTAction.DECREMENT){
+                if (!returnTag.contains(nbtName)) returnTag.putInt(nbtName, (Integer)nbtValue-1);
+                else returnTag.putInt(nbtName, returnTag.getInt(nbtName)-1);
+            } else if (nbtAction == NBTAction.SET) returnTag.putInt(nbtName, (Integer)nbtValue);
+        }
+        return returnTag;
     }
 
     public static class Serializer implements RecipeSerializer<ItemModRecipe>{
