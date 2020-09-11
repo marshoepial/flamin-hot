@@ -4,16 +4,19 @@ import com.dasheightmate.flaminhot.components.ComponentRegistrar;
 import com.dasheightmate.flaminhot.components.FlammabilityInfo;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -40,7 +43,7 @@ public abstract class FireBehaviorMixin{
 
     @ModifyVariable(method="trySpreadingFire",
             at=@At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/block/FireBlock;getSpreadChance(Lnet/minecraft/block/BlockState;)I"),
-            index = 6, ordinal = 2)
+            ordinal = 2)
     private int spreadChanceModifier(int i, World world, BlockPos pos, int spreadFactor, Random rand, int currentAge){
         FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
                 .get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).getFlammabilityInfo(pos);
@@ -74,5 +77,17 @@ public abstract class FireBehaviorMixin{
             world.removeBlock(pos, false);
             ci.cancel();
         }
+    }
+
+    //used to stop firespread around block if the block is infiniburn.
+    @Redirect(method = "areBlocksAroundFlammable", at=@At(value = "INVOKE",
+            target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+    private BlockState modifyInfiniburnFlammability(BlockView blockView, BlockPos pos){
+        if (blockView instanceof WorldView){
+            FlammabilityInfo info = ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT
+                    .get(ComponentProvider.fromChunk(((WorldView) blockView).getChunk(pos))).getFlammabilityInfo(pos);
+            if (info != null && info.infiniburn) return Blocks.AIR.getDefaultState(); //return state that isn't flammable.
+        }
+        return blockView.getBlockState(pos);
     }
 }
