@@ -13,6 +13,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -25,6 +26,10 @@ import java.util.Random;
 
 @Mixin(FireBlock.class)
 public abstract class FireBehaviorMixin{
+    @Shadow protected abstract int getSpreadChance(BlockState state);
+
+    @Shadow protected abstract int getBurnChance(BlockState state);
+
     @Inject(method="getBurnChance(Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)I",
         at=@At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;max(II)I"),
         locals= LocalCapture.CAPTURE_FAILHARD,
@@ -35,6 +40,7 @@ public abstract class FireBehaviorMixin{
                 .get(ComponentProvider.fromChunk(worldView.getChunk(pos))).getFlammabilityInfo(pos);
         if (info != null && direction == var4[var4.length-1]) {
             if (info.infiniburn) cir.setReturnValue(0);
+            if (getBurnChance(worldView.getBlockState(pos)) == 0 && info.fireproofing < 3) i = 1;
             int fireproofing = info.fireproofing;
             cir.setReturnValue((int) Math.round(i / (fireproofing > 3 ? (fireproofing - 3) * 2.0 : 1)
                     * (fireproofing < 3 ? Math.abs(fireproofing - 3) * 2 : 1)));
@@ -49,6 +55,7 @@ public abstract class FireBehaviorMixin{
                 .get(ComponentProvider.fromChunk(world.getWorldChunk(pos))).getFlammabilityInfo(pos);
         if (info != null) {
             if (info.infiniburn) return 0;
+            if (getSpreadChance(world.getBlockState(pos)) == 0 && info.fireproofing < 3) i = 4;
             int fireproofing = info.fireproofing;
             i = (i / (fireproofing > 3 ? (fireproofing - 3) * 4 : 1)) * (fireproofing < 3 ? Math.abs(fireproofing - 3) * 2 : 1);
         }
