@@ -1,10 +1,10 @@
-package com.dasheightmate.flaminhot.compat.rei;
+package com.marshoepial.flaminhot.compat.rei;
 
-import com.dasheightmate.flaminhot.FlaminHot;
-import com.dasheightmate.flaminhot.compat.rei.itemmod.ItemModRecipeCategory;
-import com.dasheightmate.flaminhot.compat.rei.itemmod.ItemModRecipeDisplay;
-import com.dasheightmate.flaminhot.items.ItemRegistrar;
-import com.dasheightmate.flaminhot.recipes.ItemModRecipe;
+import com.marshoepial.flaminhot.FlaminHot;
+import com.marshoepial.flaminhot.compat.rei.itemmod.ItemModRecipeCategory;
+import com.marshoepial.flaminhot.compat.rei.itemmod.ItemModRecipeDisplay;
+import com.marshoepial.flaminhot.items.ItemRegistrar;
+import com.marshoepial.flaminhot.recipes.ItemModRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
@@ -13,8 +13,6 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.Items;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
-
-import java.util.Arrays;
 
 public class FlaminHotReiPlugin implements REIPluginV0 {
     public static final Identifier REI_IDENTIFIER = new Identifier(FlaminHot.MOD_ID, "rei_plugin");

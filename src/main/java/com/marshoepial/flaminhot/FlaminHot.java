@@ -1,10 +1,7 @@
-package com.dasheightmate.flaminhot;
+package com.marshoepial.flaminhot;
 
-import com.dasheightmate.flaminhot.components.ComponentRegistrar;
-import com.dasheightmate.flaminhot.components.FlammabilityChunkComponent;
-import com.dasheightmate.flaminhot.items.ItemRegistrar;
-import com.dasheightmate.flaminhot.recipes.SerializerRegistrar;
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
+import com.marshoepial.flaminhot.items.ItemRegistrar;
+import com.marshoepial.flaminhot.recipes.SerializerRegistrar;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -27,7 +24,7 @@ public class FlaminHot implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "sawdust"), ItemRegistrar.SAWDUST);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "flammable_blend"), ItemRegistrar.FLAMMABLE_BLEND);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "infiniburn_blend"), ItemRegistrar.INFINIBURN_BLEND);
-        ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT.attach(ChunkComponentCallback.EVENT, FlammabilityChunkComponent::new);
+
         RecipeSerializer.register("crafting_item_mod", SerializerRegistrar.ITEM_MOD_RECIPE);
         log(Level.INFO, "Flamin' Hot initialized.");
     }

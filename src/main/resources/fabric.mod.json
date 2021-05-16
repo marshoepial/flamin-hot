@@ -5,24 +5,27 @@
   "name": "Flamin' Hot",
   "description": "Flammability modifiers for blocks. Fireproof your house, or watch the world burn.",
   "authors": [
-    "DashEightMate"
+    "marshoepial"
   ],
   "contributors": [],
   "contact": {
-    "sources": "https://github.com/DashEightMate/flamin-hot",
-    "issues": "https://github.com/DashEightMate/flamin-hot/issues"
+    "sources": "https://github.com/marshoepial/flamin-hot",
+    "issues": "https://github.com/marshoepial/flamin-hot/issues"
   },
   "license": "LGPL-3.0",
   "icon": "assets/flaminhot/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.dasheightmate.flaminhot.FlaminHot"
+      "com.marshoepial.flaminhot.FlaminHot"
     ],
     "client": [],
     "server": [],
     "rei_plugins": [
-      "com.dasheightmate.flaminhot.compat.rei.FlaminHotReiPlugin"
+      "com.marshoepial.flaminhot.compat.rei.FlaminHotReiPlugin"
+    ],
+    "cardinal-components": [
+      "com.marshoepial.flaminhot.components.ComponentRegistrar"
     ]
   },
   "mixins": [
@@ -35,7 +38,10 @@
   "custom": {
     "waila:plugins": {
       "id": "flaminhot:flammodifier",
-      "initializer": "com.dasheightmate.flaminhot.compat.hwyla.FlaminHotHwylaPlugin"
-    }
+      "initializer": "com.marshoepial.flaminhot.compat.wthit.FlaminHotWthitPlugin"
+    },
+    "cardinal-components": [
+      "flaminhot:flammabilitychunk"
+    ]
   }
 }

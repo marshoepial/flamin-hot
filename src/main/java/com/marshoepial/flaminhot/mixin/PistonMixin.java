@@ -1,9 +1,9 @@
-package com.dasheightmate.flaminhot.mixin;
+package com.marshoepial.flaminhot.mixin;
 
 //used to handle movement of fireproofed blocks by piston.
 
-import com.dasheightmate.flaminhot.components.ComponentRegistrar;
-import com.dasheightmate.flaminhot.components.FlammabilityChunkComponent;
+import com.marshoepial.flaminhot.components.ComponentRegistrar;
+import com.marshoepial.flaminhot.components.FlammabilityChunkComponent;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;

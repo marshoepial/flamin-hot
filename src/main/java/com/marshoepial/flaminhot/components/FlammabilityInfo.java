@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.components;
+package com.marshoepial.flaminhot.components;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;

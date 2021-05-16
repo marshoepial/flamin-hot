@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.items;
+package com.marshoepial.flaminhot.items;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

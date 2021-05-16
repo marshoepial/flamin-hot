@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.recipes;
+package com.marshoepial.flaminhot.recipes;
 
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;

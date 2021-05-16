@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.dasheightmate.flaminhot.mixin",
+  "package": "com.marshoepial.flaminhot.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AxeItemMixin",

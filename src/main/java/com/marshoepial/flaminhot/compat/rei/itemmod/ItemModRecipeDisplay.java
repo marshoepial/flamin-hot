@@ -1,7 +1,7 @@
-package com.dasheightmate.flaminhot.compat.rei.itemmod;
+package com.marshoepial.flaminhot.compat.rei.itemmod;
 
-import com.dasheightmate.flaminhot.compat.rei.FlaminHotReiPlugin;
-import com.dasheightmate.flaminhot.recipes.ItemModRecipe;
+import com.marshoepial.flaminhot.compat.rei.FlaminHotReiPlugin;
+import com.marshoepial.flaminhot.recipes.ItemModRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.BlockItem;

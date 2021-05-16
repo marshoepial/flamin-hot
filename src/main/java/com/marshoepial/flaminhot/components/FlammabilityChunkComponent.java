@@ -1,22 +1,20 @@
-package com.dasheightmate.flaminhot.components;
+package com.marshoepial.flaminhot.components;
 
-import dev.onyxstudios.cca.api.v3.component.AutoSyncedComponent;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FlammabilityChunkComponent implements FlammabilityChunkInterface, AutoSyncedComponent {
-    private final Map<BlockPos, FlammabilityInfo> flammabilityMap = new HashMap<>();
+    private Map<BlockPos, FlammabilityInfo> flammabilityMap = new HashMap<>();
     private Map<BlockPos, FlammabilityInfo> removedThisTick = new HashMap<>();
     private long tickOfRemoval = 0;
     private final Chunk controllingChunk;
@@ -111,8 +109,13 @@ public class FlammabilityChunkComponent implements FlammabilityChunkInterface, A
     }
 
     @Override
-    public @NotNull ComponentType<?> getComponentType() {
-        return ComponentRegistrar.FLAMMABILITY_CHUNK_COMPONENT;
+    public void copyFrom(FlammabilityChunkInterface other) {
+        flammabilityMap = other.getFlamMap();
+    }
+
+    @Override
+    public Map<BlockPos, FlammabilityInfo> getFlamMap(){
+        return flammabilityMap;
     }
 
     private void newTick(long tick){

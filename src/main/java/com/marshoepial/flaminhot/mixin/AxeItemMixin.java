@@ -1,6 +1,6 @@
-package com.dasheightmate.flaminhot.mixin;
+package com.marshoepial.flaminhot.mixin;
 
-import com.dasheightmate.flaminhot.items.ItemRegistrar;
+import com.marshoepial.flaminhot.items.ItemRegistrar;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;

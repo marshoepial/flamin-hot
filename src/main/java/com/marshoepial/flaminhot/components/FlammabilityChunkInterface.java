@@ -1,9 +1,11 @@
-package com.dasheightmate.flaminhot.components;
+package com.marshoepial.flaminhot.components;
 
-import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
+import dev.onyxstudios.cca.api.v3.component.CopyableComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import java.util.Map;
 
 public interface FlammabilityChunkInterface extends CopyableComponent<FlammabilityChunkInterface> {
     FlammabilityInfo getFlammabilityInfo(BlockPos pos);
@@ -15,4 +17,6 @@ public interface FlammabilityChunkInterface extends CopyableComponent<Flammabili
     void createBlock(BlockPos pos, FlammabilityInfo info);
 
     void moveBlock(World world, BlockPos pos, Direction dir);
+
+    Map<BlockPos, FlammabilityInfo> getFlamMap();
 }

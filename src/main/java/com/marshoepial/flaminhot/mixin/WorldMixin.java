@@ -1,6 +1,6 @@
-package com.dasheightmate.flaminhot.mixin;
+package com.marshoepial.flaminhot.mixin;
 
-import com.dasheightmate.flaminhot.components.ComponentRegistrar;
+import com.marshoepial.flaminhot.components.ComponentRegistrar;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;

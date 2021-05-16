@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.recipes;
+package com.marshoepial.flaminhot.recipes;
 
 import net.minecraft.recipe.RecipeSerializer;
 

@@ -1,8 +1,8 @@
-package com.dasheightmate.flaminhot.compat.rei.itemmod;
+package com.marshoepial.flaminhot.compat.rei.itemmod;
 
-import com.dasheightmate.flaminhot.FlaminHot;
-import com.dasheightmate.flaminhot.compat.rei.FlaminHotReiPlugin;
-import com.dasheightmate.flaminhot.components.FlammabilityInfo;
+import com.marshoepial.flaminhot.FlaminHot;
+import com.marshoepial.flaminhot.compat.rei.FlaminHotReiPlugin;
+import com.marshoepial.flaminhot.components.FlammabilityInfo;
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;

@@ -1,4 +1,4 @@
-package com.dasheightmate.flaminhot.mixin;
+package com.marshoepial.flaminhot.mixin;
 
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.BlockItem;

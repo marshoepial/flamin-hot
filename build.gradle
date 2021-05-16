@@ -1,19 +1,20 @@
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
 repositories {
 	maven {
 		name = "Ladysnake Libs"
-		url = "https://dl.bintray.com/ladysnake/libs"
+		url = 'https://ladysnake.jfrog.io/artifactory/mods'
 	}
 	maven {
-		name = "HWYLA"
-		url = "https://maven.tehnut.info"
-		content {
-			includeGroup "mcp.mobius.waila"
-		}
+		name = "WTHIT"
+		url = "https://bai.jfrog.io/artifactory/maven"
+	}
+	maven {
+		name = "shedaniel"
+		url = "https://maven.shedaniel.me"
 	}
 }
 
@@ -40,9 +41,10 @@ dependencies {
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_comp_version}"
 
-	modImplementation ("mcp.mobius.waila:Hwyla:${project.minecraft_version}-${project.hwyla_version}"){
-		exclude group: "net.fabricmc.fabric-api"
-	}
+	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${wthit_version}"
+
+	modRuntime "mcp.mobius.waila:wthit:fabric-${wthit_version}"
+
 	modCompileOnly ("me.shedaniel:RoughlyEnoughItems:${project.rei_version}"){
 		exclude group: "net.fabricmc.fabric-api"
 	}
