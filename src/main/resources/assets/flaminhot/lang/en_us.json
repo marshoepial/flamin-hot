@@ -4,5 +4,12 @@
   "item.flaminhot.flammable_blend": "Flammable Blend",
   "item.flaminhot.infiniburn_blend": "Blend of Infinite Turmoil",
   "compat.rei.flaminhot.item_mod_name": "Item Modification",
-  "compat.rei.flaminhot.info.sawdust": "Sawdust has a chance to drop when you strip a log with an axe."
+  "compat.rei.flaminhot.info.sawdust": "Sawdust has a chance to drop when you strip a log with an axe.",
+  "tooltip.flaminhot.flammability": "Flammability: %s",
+  "tooltip.flaminhot.fireproofing": "Fireproofing: %s",
+  "tooltip.flaminhot.max": " [max]",
+  "tooltip.flaminhot.less_flammable": "This block is %s%% less flammable.",
+  "tooltip.flaminhot.more_flammable": "This block is %s%% more flammable.",
+  "tooltip.flaminhot.infiniburn": "Infiniburn",
+  "tooltip.flaminhot.infiniburn_desc": "This block will burn forever."
 }

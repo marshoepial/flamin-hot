@@ -1,5 +1,6 @@
 package com.marshoepial.flaminhot.components;
 
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
@@ -45,15 +46,18 @@ public class FlammabilityInfo {
 
     public Collection<Text> addTooltip(Collection<Text> tooltip, boolean withDesc){
         if (fireproofing != 3){
-            tooltip.add(new LiteralText((fireproofing < 3 ? "Flammability: " : "Fireproofing: ")+Math.abs(fireproofing-3)+
-                    ((fireproofing == 6 || fireproofing == 0) ? " [max]" : ""))
+            tooltip.add(new LiteralText(I18n.translate(fireproofing < 3 ? "tooltip.flaminhot.flammability" : "tooltip.flaminhot.fireproofing",
+                    Math.abs(fireproofing-3)) +
+                    ((fireproofing == 6 || fireproofing == 0) ? I18n.translate("tooltip.flaminhot.max") : ""))
                     .setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-            if (withDesc) tooltip.add(new LiteralText("This block is "+Math.round((1-(1.0/(Math.abs((double)fireproofing-3.0)*2.0)))*100.0)+ "%" +
-                    (fireproofing > 3 ? " less " : " more ") + "flammable.").setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
+            if (withDesc) tooltip.add(new LiteralText(
+                    I18n.translate(fireproofing > 3 ? "tooltip.flaminhot.less_flammable" : "tooltip.flaminhot.more_flammable",
+                    Math.round((1-(1.0/(Math.abs((double)fireproofing-3.0)*2.0)))*100.0)))
+                    .setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
         }
         if (infiniburn){
-            tooltip.add(new LiteralText("Infiniburn").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-            if (withDesc) tooltip.add(new LiteralText("This block will burn forever.")
+            tooltip.add(new LiteralText(I18n.translate("tooltip.flaminhot.infiniburn")).setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
+            if (withDesc) tooltip.add(new LiteralText(I18n.translate("tooltip.flaminhot.infiniburn_desc"))
                     .setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY).withItalic(true)));
         }
         if (explosive) tooltip.add(new LiteralText("Explosive").setStyle(Style.EMPTY.withColor(Formatting.RED)));
